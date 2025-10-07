@@ -1,32 +1,30 @@
-import { IsOptional, IsString, IsNumberString } from 'class-validator';
-import { Transform, Type } from 'class-transformer';
+import { IsOptional, IsString, IsNumber } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class QueryStudentsDto {
   @IsOptional()
   @IsString()
-  readonly batch?: string;
+  batch?: string;
 
   @IsOptional()
   @IsString()
-  readonly batchRange?: string; // Format: "1989-2000"
+  batchRange?: string;
 
   @IsOptional()
   @IsString()
-  readonly full_name?: string;
+  full_name?: string;
 
   @IsOptional()
   @IsString()
-  readonly occupation?: string;
+  occupation?: string;
 
   @IsOptional()
   @Type(() => Number)
-  @Transform(({ value }) => parseInt(value as string, 10))
-  @IsNumberString()
-  readonly page?: number = 1;
+  @IsNumber()
+  page?: number;
 
   @IsOptional()
   @Type(() => Number)
-  @Transform(({ value }) => parseInt(value as string, 10))
-  @IsNumberString()
-  readonly limit?: number = 10;
+  @IsNumber()
+  limit?: number;
 }

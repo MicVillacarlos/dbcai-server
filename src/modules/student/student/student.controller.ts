@@ -7,7 +7,7 @@ import { QueryStudentsDto } from '../../../dto/queryStudents.dto';
 export class StudentController {
   constructor(private readonly studentService: StudentService) {}
 
-  @Post('/')
+  @Post()
   async createStudent(@Body() createStudentDto: CreateStudentDto) {
     return await this.studentService.createStudent(createStudentDto);
   }
