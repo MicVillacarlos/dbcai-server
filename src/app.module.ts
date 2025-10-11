@@ -4,7 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConnectionStates, type Connection } from 'mongoose';
 // import { AppController } from './app.controller';
 import { AuthModule } from './modules/auth/auth.module';
-import { StudentModule } from './modules/student/student/student.module';
+import { StudentModule } from './modules/student/student.module';
 
 @Module({
   imports: [

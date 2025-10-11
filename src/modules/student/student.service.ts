@@ -5,10 +5,10 @@ import {
   ConflictException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Student } from '../../../schemas/students.schema';
+import { Student } from '../../schemas/students.schema';
 import { Model, PipelineStage } from 'mongoose';
-import { CreateStudentDto } from '../../../dto/createStudent.dto';
-import { QueryStudentsDto } from '../../../dto/queryStudents.dto';
+import { CreateStudentDto } from '../../dto/createStudent.dto';
+import { QueryStudentsDto } from '../../dto/queryStudents.dto';
 
 interface MatchStage {
   batch?: string | { $gte: string; $lte: string };
