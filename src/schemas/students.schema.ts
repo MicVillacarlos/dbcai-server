@@ -28,6 +28,9 @@ export class Student {
 
   @Prop({ default: false })
   isDeceased: boolean;
+
+  @Prop({ deafault: false })
+  isDbcaiCareerMember: boolean;
 }
 
 export const StudentSchema = SchemaFactory.createForClass(Student);

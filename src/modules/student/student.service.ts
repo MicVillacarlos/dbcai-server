@@ -44,7 +44,6 @@ export class StudentService {
       const newStudent = await this.studentModel.create(data);
       return newStudent;
     } catch (error) {
-      // Re-throw ConflictException as is
       if (error instanceof ConflictException) {
         throw error;
       }
@@ -53,6 +52,55 @@ export class StudentService {
         error instanceof Error
           ? error.message
           : 'Error occurred while creating student';
+      throw new HttpException(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  /**
+   * @param id
+   * @param data
+   * @returns
+   */
+  async updateStudent(
+    id: string,
+    data: CreateStudentDto,
+  ): Promise<{ success: boolean; student: Student }> {
+    try {
+      const { ...updateFields } = data;
+
+      if (!id) {
+        throw new HttpException(
+          'Student id is required for update.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      const student = await this.studentModel.findByIdAndUpdate(
+        id,
+        updateFields,
+        {
+          new: true, // Return the updated document
+          runValidators: true, // Run schema validators on update
+        },
+      );
+
+      if (!student) {
+        throw new HttpException(
+          `Student with id "${id}" not found.`,
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
+      return { success: true, student };
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : 'Error occurred while updating student';
       throw new HttpException(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
