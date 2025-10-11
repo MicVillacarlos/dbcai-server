@@ -5,13 +5,19 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { Request } from 'express';
 
+interface JwtPayload {
+  sub: string;
+  email?: string;
+  // Add other properties from your JWT payload here
+}
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
   constructor(private jwtService: JwtService) {}
 
   canActivate(context: ExecutionContext): boolean {
-    const request = context.switchToHttp().getRequest();
+    const request = context.switchToHttp().getRequest<Request>();
     const authHeader = request.headers['authorization'];
 
     if (!authHeader) {
@@ -24,12 +30,13 @@ export class JwtAuthGuard implements CanActivate {
     }
 
     try {
-      const payload = this.jwtService.verify(token);
+      const payload = this.jwtService.verify<JwtPayload>(token);
       request.user = payload;
 
       return true;
-    } catch (error: any) {
-      const errorMessage = error?.message || 'Invalid token';
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Invalid token';
       throw new UnauthorizedException(errorMessage);
     }
   }
